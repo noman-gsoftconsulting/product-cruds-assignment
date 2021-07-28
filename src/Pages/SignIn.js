@@ -12,12 +12,14 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { logIn } from "../Redux/Actions/Auth";
 import { useHistory } from "react-router";
+import { alertNotification } from "../Redux/Actions/messagesAction";
+import AlertMessage from "../Components/AlertMessage";
 
 function Copyright() {
   return (
@@ -82,8 +84,7 @@ function SignIn() {
     resolver: yupResolver(schema),
   });
 
-  const data = useSelector((state) => state.token);
-  const errorMessage = useSelector((state) => state.errorMessage);
+  // const errorMessage = useSelector((state) => state.errorMessage);
   //   console.log(errorMessage);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -96,15 +97,23 @@ function SignIn() {
     );
     if (response?.status === 200) {
       localStorage.setItem("isAuthenticated", "true");
-      history.push("/Home");
+      dispatch(
+        alertNotification({ message: "Logged In Successfully.", open: true, severity: "success" })
+      );
+      setTimeout(() => {
+        history.push("/home");
+        }, 6000)
     } else {
+      dispatch(
+        alertNotification({ message: "Incorrect email or password.", open: true, severity: "error" })
+      );
       localStorage.setItem("isAuthenticated", "false");
     }
   };
 
   useEffect(() => {
     let isAuth = localStorage.getItem("isAuthenticated");
-    if (isAuth) {
+    if (isAuth === true) {
       history.push("/Home");
     }
   }, []);
@@ -123,12 +132,10 @@ function SignIn() {
           <TextField
             variant="outlined"
             margin="normal"
-            required
             fullWidth
             id="email"
             label="Username"
             name="username"
-            autoComplete="username"
             autoFocus
             {...register("identifier", { required: true })}
             error={errors.identifier ? true : false}
@@ -137,13 +144,11 @@ function SignIn() {
           <TextField
             variant="outlined"
             margin="normal"
-            required
             fullWidth
             name="password"
             label="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
             {...register("password", { required: true })}
             error={errors.password ? true : false}
             helperText={errors.password?.message}
@@ -152,7 +157,7 @@ function SignIn() {
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
-          <p>{errorMessage}</p>
+          {/* <p>{errorMessage}</p> */}
           <Button
             type="submit"
             fullWidth
@@ -174,6 +179,7 @@ function SignIn() {
               </Link>
             </Grid>
           </Grid>
+          <AlertMessage />
         </form>
       </div>
       <Box mt={8}>

@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ProtectedRoute from "./Utils/Routes/ProtectedRoute";
 import SignIn from "./Pages/SignIn";
-import ProductListing from "./Containers/ProductListing";
 import ProductDetail from "./Containers/ProductDetail";
 import Home from "./Pages/Home";
 import AddEdit from "./Components/AddEdit"
@@ -19,9 +18,9 @@ function App() {
         {/* <Route exact path="/signup">
           <SignUp />
         </Route> */}
-        <Route exact path="/ProductListing/:id" component={ProductDetail} />
-        <Route exact path="/AddEdit" component={AddEdit} />
-        {/* <Route exact path="/editProduct" component={EditProduct} /> */}
+        <Route exact path="/product-Detail/:id" component={ProductDetail} />
+        <Route exact path="/add-Product" component={() => <AddEdit title={`Add New Product`} button={`Submit`} />} />
+        <Route exact path="/edit-Product/:id" component={() => <AddEdit title={`Edit Product`} button={`Update`} />} />
       </Switch>
     </Router>
   );

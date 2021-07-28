@@ -4,15 +4,13 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import Switch from "@material-ui/core/Switch";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormGroup from "@material-ui/core/FormGroup";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router";
+import {logOut} from "../Redux/Actions/Auth"
+import {useDispatch} from "react-redux"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,13 +27,13 @@ const useStyles = makeStyles((theme) => ({
 
 function NavBar() {
   const classes = useStyles();
-  const [auth, setAuth] = React.useState(true);
+  // const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
+  // const handleChange = (event) => {
+  //   setAuth(event.target.checked);
+  // };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -45,9 +43,16 @@ function NavBar() {
     setAnchorEl(null);
   };
 
+  const dispatch = useDispatch();
+  const handleLogOut = () => {
+    dispatch(logOut());
+    localStorage.removeItem("isAuthenticated");
+    history.push("/")
+  }
+
   const history = useHistory();
   const handleClick = () => {
-      history.push("/AddEdit")
+      history.push("/add-Product")
   }
 
   return (
@@ -57,7 +62,7 @@ function NavBar() {
           <Typography variant="h6" className={classes.title}>
             E Store
           </Typography>
-          {auth && (
+          {/* {auth && ( */}
             <div>
               <Button variant="contained" color="primary" component="span" onClick={handleClick}>
                 Add New Product
@@ -87,10 +92,10 @@ function NavBar() {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={handleLogOut}>Logout</MenuItem>
               </Menu>
             </div>
-          )}
+          {/* )} */}
         </Toolbar>
       </AppBar>
     </div>
