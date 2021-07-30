@@ -1,9 +1,8 @@
 export const LOG_IN = "LOG_IN";
-export const AUTH_ERROR = "AUTH_ERROR";
 export const GET_PRODUCTS = "GET_PRODUCTS";
 export const GET_PRODUCT_DETAIL = "GET_PRODUCT_DETAIL";
 export const DELETE_PRODUCT = "DELETE_PRODUCT";
 export const ADD_PRODUCT = "ADD_PRODUCT";
 export const UPDATE_PRODUCT = "UPDATE_PRODUCT"
-export const SUCCESS_NOTIFICATION = "SUCCESS_NOTIFICATION"
+export const NOTIFICATION = "NOTIFICATION"
 export const LOG_OUT = "LOG_OUT"

@@ -9,15 +9,16 @@ import Container from "@material-ui/core/Container";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { addProduct } from "../Redux/Actions/productActions";
+import { addProduct } from "../redux/actions/productActions";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { getProductDetail } from "../Redux/Actions/productActions";
-import { updateProduct } from "../Redux/Actions/productActions";
+import { getProductDetail } from "../redux/actions/productActions";
+import { updateProduct } from "../redux/actions/productActions";
 import { useHistory } from "react-router";
-import AlertMessage from "./AlertMessage";
-import { alertNotification } from "../Redux/Actions/messagesAction";
+import AlertMessage from "./alertMessage";
+import { alertNotification } from "../redux/actions/messagesAction";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,11 +32,27 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+  },
+  deleteButton: {
+    position: "relative",
+    verticalAlign: "middle",
+    display: "inline-block",
+  },
+  icon: {
+    cursor: "pointer",
+    position: "absolute",
+    // top: "52%",
+    // right: "36%",
+    width: "20px",
+    content: "",
+    top: "5px",
+    right: "5px",
+    height: "20px"
   },
 }));
 
@@ -44,19 +61,19 @@ function AddEdit(props) {
   const [imageData, setImageData] = useState(null);
   const [value, setValue] = useState("");
   const { id } = useParams();
-  // console.log(id);
   const dispatch = useDispatch();
   const history = useHistory();
   useEffect(async () => {
     if (id) {
       const response = await dispatch(getProductDetail(id));
-      // console.log(response?.data?.coverPhoto?.url);
+      // console.log(response.data.coverPhoto.url);
       setValue({
         title: response?.data?.title,
         price: response?.data?.price,
         description: response?.data?.description,
-        attachment: response?.data?.attachment,
+        // attachment: API + response?.data?.coverPhoto?.url,
       });
+      setImage(process.env.REACT_APP_BASE_URL + (response?.data?.coverPhoto?.url));
     } else {
       // console.log(id);
     }
@@ -68,7 +85,7 @@ function AddEdit(props) {
     title: yup.string().required("Title is required."),
     description: yup.string().required("Description is required."),
     price: yup
-      .string("Price is required.")
+      .string()
       .matches(/^[0-9]+$/, "Price must be in numerics")
       .required("Price is required."),
     //   .test("type", "Required & Only support in jpg format", (value) => {
@@ -85,9 +102,11 @@ function AddEdit(props) {
   });
 
   const token = useSelector((state) => state.auth.token);
+  let [enabled, setEnabled] = useState(false);
 
   const onSubmit = async (data) => {
-    console.log(data);
+    setEnabled(true);
+    // console.log(data);
     let formData = new FormData();
     formData.append("files", imageData);
     const config = {
@@ -103,13 +122,13 @@ function AddEdit(props) {
         config
       )
       .then((resp) => {
-        console.log(resp.status);
+        // console.log(resp.status);
         return resp;
       })
       .catch((error) => {
-        console.log(error.message);
+        // console.log(error.message);
       });
-    console.log(resp, "==============");
+    // console.log(resp, "==============");
     if (id) {
       const response = await dispatch(
         updateProduct({
@@ -120,21 +139,26 @@ function AddEdit(props) {
           id,
         })
       );
-      // console.log(response);
       if (response?.status === 200) {
         dispatch(
-          alertNotification({ message: "Product successfully updated.", open: true, severity: "success" })
+          alertNotification({
+            message: "Product successfully updated.",
+            open: true,
+            severity: "success",
+          })
         );
         setTimeout(() => {
           history.push("/home");
-          }, 7000)
+        }, 1000);
       } else {
         dispatch(
-          alertNotification({ message: "Error while updating product.", open: true, severity: "error" })
+          alertNotification({
+            message: "Error while updating product.",
+            open: true,
+            severity: "error",
+          })
         );
       }
-      // console.log(response?.status);
-      // console.log("Product Updated Successfully");
     } else {
       const response = await dispatch(
         addProduct({
@@ -144,18 +168,26 @@ function AddEdit(props) {
           coverPhoto: resp?.data[0]?.id,
         })
       );
-      console.log(response?.status);
-      console.log("Product is Added Successfully");
+      // console.log(response?.status);
+      // console.log("Product is Added Successfully");
       if (response?.status === 200) {
         dispatch(
-          alertNotification({ message: "Product is Added Successfully", open: true, severity: "success" })
+          alertNotification({
+            message: "Product is Added Successfully",
+            open: true,
+            severity: "success",
+          })
         );
         setTimeout(() => {
-        history.push("/home");
-        }, 7000)
+          history.push("/home");
+        }, 1000);
       } else {
         dispatch(
-          alertNotification({ message: "Error while adding product.", open: true, severity: "error" })
+          alertNotification({
+            message: "Error while adding product.",
+            open: true,
+            severity: "error",
+          })
         );
       }
     }
@@ -165,6 +197,10 @@ function AddEdit(props) {
     setImageData(event.target.files[0]);
     setImage(URL.createObjectURL(event.target.files[0]));
   };
+
+  function deleteFile() {
+    setImage(null);
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -232,13 +268,18 @@ function AddEdit(props) {
                 style={{ display: "none" }}
                 id="contained-button-file"
                 type="file"
-                value={value.attachment}
-                // {...register("attachment", { required: true })}
-                // error={errors.attachment ? true : false}
-                // helperText={errors.attachment?.message}
+                // value={value.attachment}
                 onChange={handleChange}
               />
-              {image && <img src={image} alt={value.title} />}
+              {image && (
+                <div className={classes.deleteButton}>
+                  <HighlightOffIcon
+                    onClick={() => deleteFile()}
+                    className={classes.icon}
+                  />
+                  <img src={image} alt={value.title} width="396" />
+                </div>
+              )}
               <label htmlFor="contained-button-file">
                 <Button
                   variant="contained"
@@ -257,6 +298,7 @@ function AddEdit(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
+            disabled={enabled}
           >
             {props.button}
           </Button>

@@ -1,7 +1,6 @@
 import React from "react";
-import NavBar from "../Components/NavBar";
-import ProductListing from "../Containers/ProductListing";
-// import AlertMessage from "../Components/AlertMessage";
+import NavBar from "../components/navBar";
+import ProductListing from "../containers/productListing";
 
 
 function Home() {
@@ -9,7 +8,6 @@ function Home() {
     <div>
       <NavBar />
       <ProductListing />
-      {/* <AlertMessage /> */}
     </div>
   );
 }

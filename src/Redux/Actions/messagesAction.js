@@ -1,4 +1,4 @@
-import { SUCCESS_NOTIFICATION } from "../Types";
+import { NOTIFICATION } from "../types";
 
 export const alertNotification =
   ({ message, open, severity }) =>
@@ -9,7 +9,7 @@ export const alertNotification =
       severity: severity,
     };
     dispatch({
-      type: SUCCESS_NOTIFICATION,
+      type: NOTIFICATION,
       payload: data,
     });
   };

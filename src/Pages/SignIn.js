@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
@@ -16,10 +14,10 @@ import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { logIn } from "../Redux/Actions/Auth";
+import { logIn } from "../redux/actions/auth";
 import { useHistory } from "react-router";
-import { alertNotification } from "../Redux/Actions/messagesAction";
-import AlertMessage from "../Components/AlertMessage";
+import { alertNotification } from "../redux/actions/messagesAction";
+import AlertMessage from "../components/alertMessage";
 
 function Copyright() {
   return (
@@ -46,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -84,11 +82,12 @@ function SignIn() {
     resolver: yupResolver(schema),
   });
 
-  // const errorMessage = useSelector((state) => state.errorMessage);
-  //   console.log(errorMessage);
+  let [enabled, setEnabled] = useState(false);
+
   const dispatch = useDispatch();
   const history = useHistory();
   const onSubmit = async (data) => {
+    setEnabled(true);
     const response = await dispatch(
       logIn({
         identifier: data.identifier,
@@ -97,24 +96,24 @@ function SignIn() {
     );
     if (response?.status === 200) {
       localStorage.setItem("isAuthenticated", "true");
-      dispatch(
-        alertNotification({ message: "Logged In Successfully.", open: true, severity: "success" })
-      );
-      setTimeout(() => {
-        history.push("/home");
-        }, 6000)
+      history.push("/home");
     } else {
       dispatch(
-        alertNotification({ message: "Incorrect email or password.", open: true, severity: "error" })
+        alertNotification({
+          message: "Incorrect username or password.",
+          open: true,
+          severity: "error",
+        })
       );
-      localStorage.setItem("isAuthenticated", "false");
+      setEnabled(false);
     }
   };
 
   useEffect(() => {
     let isAuth = localStorage.getItem("isAuthenticated");
-    if (isAuth === true) {
-      history.push("/Home");
+    // console.log(isAuth);
+    if (isAuth) {
+      history.push("/home");
     }
   }, []);
 
@@ -153,26 +152,17 @@ function SignIn() {
             error={errors.password ? true : false}
             helperText={errors.password?.message}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          {/* <p>{errorMessage}</p> */}
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            disabled={enabled}
           >
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
             <Grid item>
               <Link href="#" variant="body2">
                 {"Don't have an account? Sign Up"}

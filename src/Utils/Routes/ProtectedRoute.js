@@ -1,15 +1,17 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
+import {useSelector} from "react-redux"
 
 function ProtectedRoute({ component: Component, ...restOfProps }) {
+  const token = useSelector((state) => state.auth.token);
   const isAuthenticated = localStorage.getItem("isAuthenticated");
-  // console.log(isAuthenticated);
+
 
   return (
     <Route
       {...restOfProps}
       render={(props) =>
-        isAuthenticated ? <Component {...props} /> : <Redirect to="/" />
+        isAuthenticated && token ? <Component {...props} /> : <Redirect to="/" />
       }
     />
   );

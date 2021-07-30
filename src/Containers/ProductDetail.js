@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getProductDetail } from "../Redux/Actions/productActions";
+import { getProductDetail } from "../redux/actions/productActions";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -41,9 +41,7 @@ function ProductDetail() {
   const classes = useStyles();
   const { id } = useParams();
   const product = useSelector((state) => state.product.productDetail);
-  //   console.log(product);
   const dispatch = useDispatch();
-  //   const history = useHistory();
   useEffect(() => {
     dispatch(getProductDetail(id));
   }, []);
@@ -76,13 +74,6 @@ function ProductDetail() {
         title="Product Image"
       />
     </>
-    // <div>
-    //   <p>Product Detail Page</p>
-    //   <img src="{product.coverPhoto.url}" alt="Images"/>
-    //   <div>{product.id}</div>
-    //   <div>${product.price}</div>
-    //   <div>{product.description}</div>
-    // </div>
   );
 }
 

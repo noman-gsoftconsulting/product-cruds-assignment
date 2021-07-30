@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-import { alertNotification } from "../Redux/Actions/messagesAction";
+import { alertNotification } from "../redux/actions/messagesAction";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -15,7 +15,7 @@ function AlertMessage() {
   useEffect(() => {
     let duration = setTimeout(() => {
       dispatch(alertNotification({ message: "", open: false, severity: "" }));
-    }, 6000);
+    }, 1000);
     return () => {
       clearTimeout(duration);
     };

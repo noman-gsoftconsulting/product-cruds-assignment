@@ -1,4 +1,4 @@
-import { SUCCESS_NOTIFICATION } from "../Types";
+import { NOTIFICATION } from "../types";
 
 const initialState = {
   severity: "",
@@ -6,9 +6,9 @@ const initialState = {
   message: "",
 };
 
-const ProductReducer = (state = initialState, action) => {
+const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SUCCESS_NOTIFICATION: {
+    case NOTIFICATION: {
       return {
         ...state,
         severity: action.payload.severity,
@@ -21,4 +21,4 @@ const ProductReducer = (state = initialState, action) => {
   }
 };
 
-export default ProductReducer;
+export default notificationReducer;
