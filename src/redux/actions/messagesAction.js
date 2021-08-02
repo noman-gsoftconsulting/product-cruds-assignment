@@ -13,6 +13,3 @@ export const alertNotification =
       payload: data,
     });
   };
-
-
-//This is for change folder names.

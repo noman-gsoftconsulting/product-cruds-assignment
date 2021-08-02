@@ -54,6 +54,3 @@ function ProductCard() {
 }
 
 export default ProductCard;
-
-//This is for change folder names.
-

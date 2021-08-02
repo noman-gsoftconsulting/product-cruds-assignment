@@ -19,6 +19,3 @@ const PublicRoute = ({ component: Component, restricted, ...restOfProps }) => {
 };
 
 export default PublicRoute;
-
-
-//This is for change folder names.

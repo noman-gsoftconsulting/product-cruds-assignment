@@ -78,6 +78,3 @@ function ProductDetail() {
 }
 
 export default ProductDetail;
-
-
-//This is for change folder names.

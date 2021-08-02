@@ -26,6 +26,3 @@ function App() {
 }
 
 export default App;
-
-
-//This is for change folder names.

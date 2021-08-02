@@ -37,6 +37,3 @@ function AlertMessage() {
 }
 
 export default AlertMessage;
-
-//This is for change folder names.
-

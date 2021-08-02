@@ -180,6 +180,3 @@ function SignIn() {
 }
 
 export default SignIn;
-
-
-//This is for change folder names.
