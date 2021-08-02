@@ -32,3 +32,6 @@ export const logIn =
 export const logOut = () => async (dispatch) => {
   dispatch({ type: LOG_OUT });
 };
+
+
+//This is for change folder names.

@@ -17,3 +17,6 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
+
+
+//This is for change folder names.

@@ -10,3 +10,6 @@ const rootReducer = combineReducers({
 });
 
 export default rootReducer;
+
+
+//This is for change folder names.

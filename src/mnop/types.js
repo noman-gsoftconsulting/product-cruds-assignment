@@ -6,3 +6,5 @@ export const ADD_PRODUCT = "ADD_PRODUCT";
 export const UPDATE_PRODUCT = "UPDATE_PRODUCT"
 export const NOTIFICATION = "NOTIFICATION"
 export const LOG_OUT = "LOG_OUT"
+
+//This is for change folder names.

@@ -18,3 +18,5 @@ function ProtectedRoute({ component: Component, ...restOfProps }) {
 }
 
 export default ProtectedRoute;
+
+//This is for change folder names.

@@ -58,3 +58,6 @@ const ProductReducer = (state = initialState, action) => {
 };
 
 export default ProductReducer;
+
+
+//This is for change folder names.

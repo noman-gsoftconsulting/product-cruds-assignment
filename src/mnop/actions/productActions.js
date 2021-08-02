@@ -112,3 +112,6 @@ export const updateProduct =
       return console.log(error);
     }
   };
+
+
+//This is for change folder names.

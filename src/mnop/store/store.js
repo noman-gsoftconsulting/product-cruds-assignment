@@ -12,3 +12,6 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, index);
 export const store = createStore(persistedReducer, applyMiddleware(thunk));
+
+
+//This is for change folder names.
