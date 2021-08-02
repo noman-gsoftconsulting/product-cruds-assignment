@@ -19,19 +19,6 @@ import { useHistory } from "react-router";
 import { alertNotification } from "../redux/actions/messagesAction";
 import AlertMessage from "../components/alertMessage";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -97,6 +84,7 @@ function SignIn() {
     if (response?.status === 200) {
       localStorage.setItem("isAuthenticated", "true");
       history.push("/home");
+      console.log(response);
     } else {
       dispatch(
         alertNotification({
@@ -172,9 +160,6 @@ function SignIn() {
           <AlertMessage />
         </form>
       </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
     </Container>
   );
 }

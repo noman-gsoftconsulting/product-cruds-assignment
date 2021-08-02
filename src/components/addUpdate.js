@@ -18,7 +18,7 @@ import { updateProduct } from "../redux/actions/productActions";
 import { useHistory } from "react-router";
 import AlertMessage from "./alertMessage";
 import { alertNotification } from "../redux/actions/messagesAction";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff"
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     content: "",
     top: "5px",
     right: "5px",
-    height: "20px"
+    height: "20px",
   },
 }));
 
@@ -73,7 +73,9 @@ function AddEdit(props) {
         description: response?.data?.description,
         // attachment: API + response?.data?.coverPhoto?.url,
       });
-      setImage(process.env.REACT_APP_BASE_URL + (response?.data?.coverPhoto?.url));
+      setImage(
+        process.env.REACT_APP_BASE_URL + response?.data?.coverPhoto?.url
+      );
     } else {
       // console.log(id);
     }
@@ -149,7 +151,7 @@ function AddEdit(props) {
         );
         setTimeout(() => {
           history.push("/home");
-        }, 1000);
+        }, 3000);
       } else {
         dispatch(
           alertNotification({
@@ -158,6 +160,7 @@ function AddEdit(props) {
             severity: "error",
           })
         );
+        setEnabled(false);
       }
     } else {
       const response = await dispatch(
@@ -180,7 +183,7 @@ function AddEdit(props) {
         );
         setTimeout(() => {
           history.push("/home");
-        }, 1000);
+        }, 3000);
       } else {
         dispatch(
           alertNotification({
@@ -189,6 +192,7 @@ function AddEdit(props) {
             severity: "error",
           })
         );
+        setEnabled(false);
       }
     }
   };
@@ -202,110 +206,136 @@ function AddEdit(props) {
     setImage(null);
   }
 
+  const handleClick = () => {
+    history.push("/");
+  };
+
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Typography component="h1" variant="h5">
-          {props.title}
-        </Typography>
-        <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                name="title"
-                variant="outlined"
-                fullWidth
-                id="title"
-                label="Title"
-                autoFocus
-                InputLabelProps={{ shrink: true }}
-                value={value.title}
-                {...register("title", { required: true })}
-                error={errors.title ? true : false}
-                helperText={errors.title?.message}
-                onChange={(e) => {
-                  setValue(e.target.value);
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                fullWidth
-                id="price"
-                label="Price"
-                name="price"
-                InputLabelProps={{ shrink: true }}
-                value={value.price}
-                {...register("price", { required: true })}
-                error={errors.price ? true : false}
-                helperText={errors.price?.message}
-                onChange={(e) => {
-                  setValue(e.target.value);
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                fullWidth
-                id="description"
-                label="Description"
-                name="description"
-                InputLabelProps={{ shrink: true }}
-                value={value.description}
-                {...register("description", { required: true })}
-                error={errors.description ? true : false}
-                helperText={errors.description?.message}
-                onChange={(e) => {
-                  setValue(e.target.value);
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <input
-                style={{ display: "none" }}
-                id="contained-button-file"
-                type="file"
-                // value={value.attachment}
-                onChange={handleChange}
-              />
-              {image && (
-                <div className={classes.deleteButton}>
-                  <HighlightOffIcon
-                    onClick={() => deleteFile()}
-                    className={classes.icon}
-                  />
-                  <img src={image} alt={value.title} width="396" />
-                </div>
-              )}
-              <label htmlFor="contained-button-file">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  component="span"
+    <div>
+      <Button
+        variant="outlined"
+        color="primary"
+        size="small"
+        component="span"
+        style={{ top: 20, left: 20 }}
+        onClick={handleClick}
+      >
+        Go Back
+      </Button>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Typography component="h1" variant="h5">
+            {props.title}
+          </Typography>
+          <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  name="title"
+                  variant="outlined"
                   fullWidth
-                >
-                  Upload
-                </Button>
-              </label>
+                  id="title"
+                  label="Title"
+                  autoFocus
+                  InputLabelProps={{ shrink: true }}
+                  value={value.title}
+                  {...register("title", { required: true })}
+                  error={errors.title ? true : false}
+                  helperText={errors.title?.message}
+                  onChange={(e) => {
+                    setValue(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  id="price"
+                  label="Price"
+                  name="price"
+                  InputLabelProps={{ shrink: true }}
+                  value={value.price}
+                  {...register("price", { required: true })}
+                  error={errors.price ? true : false}
+                  helperText={errors.price?.message}
+                  onChange={(e) => {
+                    setValue(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  id="description"
+                  label="Description"
+                  name="description"
+                  InputLabelProps={{ shrink: true }}
+                  value={value.description}
+                  {...register("description", { required: true })}
+                  error={errors.description ? true : false}
+                  helperText={errors.description?.message}
+                  onChange={(e) => {
+                    setValue(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <input
+                  style={{ display: "none" }}
+                  id="contained-button-file"
+                  type="file"
+                  // value={value.attachment}
+                  onChange={handleChange}
+                  accept="image/png, image/jpg, image/jpeg, image/webp"
+                />
+                {image && (
+                  <div className={classes.deleteButton}>
+                    <HighlightOffIcon
+                      onClick={() => deleteFile()}
+                      className={classes.icon}
+                    />
+                    <img
+                      src={image}
+                      alt={value.title}
+                      width="396"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src =
+                          "https://1080motion.com/wp-content/uploads/2018/06/NoImageFound.jpg.png";
+                      }}
+                    />
+                  </div>
+                )}
+                <label htmlFor="contained-button-file">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component="span"
+                    fullWidth
+                  >
+                    Upload
+                  </Button>
+                </label>
+              </Grid>
             </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            disabled={enabled}
-          >
-            {props.button}
-          </Button>
-          <AlertMessage />
-        </form>
-      </div>
-    </Container>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              disabled={enabled}
+            >
+              {props.button}
+            </Button>
+            <AlertMessage />
+          </form>
+        </div>
+      </Container>
+    </div>
   );
 }
 

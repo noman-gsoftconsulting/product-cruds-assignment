@@ -17,9 +17,9 @@ function App() {
         {/* <Route exact path="/signup">
           <SignUp />
         </Route> */}
-        <ProtectedRoute exact path="/product-Detail/:id" component={ProductDetail} />
-        <ProtectedRoute exact path="/add-Product" component={() => <AddEdit title={`Add New Product`} button={`Submit`} />} />
-        <ProtectedRoute exact path="/edit-Product/:id" component={() => <AddEdit title={`Edit Product`} button={`Update`} />} />
+        <ProtectedRoute exact path="/product-detail/:id" component={ProductDetail} />
+        <ProtectedRoute exact path="/add-product" component={() => <AddEdit title={`Add New Product`} button={`Submit`} />} />
+        <ProtectedRoute exact path="/edit-product/:id" component={() => <AddEdit title={`Edit Product`} button={`Update`} />} />
       </Switch>
     </Router>
   );

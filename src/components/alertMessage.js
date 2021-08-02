@@ -15,7 +15,7 @@ function AlertMessage() {
   useEffect(() => {
     let duration = setTimeout(() => {
       dispatch(alertNotification({ message: "", open: false, severity: "" }));
-    }, 1000);
+    }, 2000);
     return () => {
       clearTimeout(duration);
     };
